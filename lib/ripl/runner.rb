@@ -86,7 +86,12 @@ class Ripl::Runner
     end
 
     def format_error(err)
-      stack = err.backtrace.take_while {|line| line !~ %r{/ripl/\S+\.rb} }
+      if err.backtrace
+        stack = err.backtrace.take_while {|line| line !~ %r{/ripl/\S+\.rb} }
+      else
+        stack = ['(No backtrace)']
+      end
+
       "#{err.class}: #{err.message}#{$/}    #{stack.join("#{$/}    ")}"
     end
   end
